@@ -4,9 +4,10 @@ const Schema = mongoose.Schema;
 const UserModel = mongoose.model(
   "User",
   new Schema({
+    username: String,
     name: String,
-    userid: String,
-    displayName: String,
+    twitterID: String,
+    thumbnail: String,
   })
 );
 

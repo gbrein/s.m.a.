@@ -64,7 +64,7 @@ passport.use(new TwitterStrategy({
   },
   function (req, token, tokenSecret, profile, done) {
     userModel.findOne({
-      twitterId: profile.id
+      twitterID: profile.id
     }).then((currentUser) => {
       // console.log(profile);
       if (currentUser) {
