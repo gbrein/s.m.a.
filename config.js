@@ -143,6 +143,7 @@ app.get('/logedUser', ensureAuthenticated(), (request, response) => {
       // console.log(element.text);
       return element.text
     });
+    console.log(tweets);
     response.render('logedUser', {tweets, layout: 'layoutLoged.hbs'});
   }); 
 });
