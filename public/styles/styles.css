@@ -1,0 +1,81 @@
+.navbar {
+  background-color: rgba(255, 255, 255, 0.1);
+  height: 15%;
+  margin-bottom: 0;
+}
+
+.navbar-brand {
+  background-image: url('../images/Logo.png');
+  width: 6%;
+  height: 100%;
+  margin-left: 1em;
+  background-size: 100% 100%;
+  x
+}
+
+.nav-item {
+  margin-right: 1em;
+}
+
+.navbar-nav {
+  flex-direction: row;
+  margin-right: 2em;
+}
+
+.footer {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 2em;
+}
+
+body {
+  background: url(../images/background-beach-beautiful-301375.jpg) no-repeat center center fixed;
+  background-size: cover;
+  height: 100%;
+  overflow: hidden;
+}
+
+.foot-link {
+  color: white;
+  text-decoration: underline;
+}
+
+.main-page-containeer {
+  display: flex;
+  align-content: center;
+  height: 70%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.row {
+  align-content: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.row-containeer {
+  background-color: rgba(255, 255, 255, 0.1);
+  width: 30em;
+  height: 22em;
+  border-radius: 25px;
+}
+
+.main-image {
+  margin-top: 6%;
+  margin-left: 33%;
+  max-width: 30%;
+  height: auto;
+}
+
+.row-btn {
+  margin-top: 2em;
+  margin-left: 15%;
+}
+
+/* * {
+  border: black 1px solid;
+} */
