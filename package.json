@@ -4,7 +4,9 @@
   "description": "Projeto Ironhack 2 Wireframe https://xd.adobe.com/view/5d60d839-6c5e-47ad-497a-5ecba697e5d1-2b51/",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./bin/www",
+    "dev": "DEBUG=aula-auth:* nodemon ..app.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,20 @@
   "bugs": {
     "url": "https://github.com/gbrein/s.m.a./issues"
   },
-  "homepage": "https://github.com/gbrein/s.m.a.#readme"
+  "homepage": "https://github.com/gbrein/s.m.a.#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "connect-ensure-authenticated": "^1.0.6",
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4",
+    "express-session": "^1.16.1",
+    "hbs": "^4.0.4",
+    "mongoose": "^5.5.2",
+    "node-twitter-api": "^1.8.0",
+    "nodemon": "^1.18.11",
+    "passport": "^0.4.0",
+    "passport-twitter": "^1.0.4",
+    "twit": "^2.2.11",
+    "twitter": "^1.7.1"
+  }
 }
