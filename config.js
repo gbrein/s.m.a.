@@ -14,10 +14,10 @@ const {
   ensureAuthenticated
 } = require('connect-ensure-authenticated');
 const client = new twit({
-  consumer_key: dotEnv.parsed.consumerKey,
-  consumer_secret: dotEnv.parsed.consumerSecret,
-  access_token: dotEnv.parsed.accessToken,
-  access_token_secret: dotEnv.parsed.acessSecret
+  consumer_key: process.env.consumerKey,
+  consumer_secret: process.env.consumerSecret,
+  access_token: process.env.accessToken,
+  access_token_secret: process.env.acessSecret
 
 });
 
