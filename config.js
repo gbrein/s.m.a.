@@ -39,7 +39,7 @@ app.use(
   }),
 );
 
-mongoose.connect(`mongodb://${process.env.dbUser}:${process.env.dbPassword}@ds133865.mlab.com:33865/${dbName}`, (error) => {
+mongoose.connect(`${process.env.MONGODB_URI}`, (error) => {
   if (error) {
     console.log('Não consegui conectar');
   } else {
