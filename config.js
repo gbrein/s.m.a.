@@ -48,7 +48,7 @@ mongoose.connect(`mongodb://localhost/${dbName}`, (error) => {
 });
 
 app.use(session({
-  secret: dotEnv.parsed.secret,
+  secret: process.env.secret,
   resave: true,
   saveUninitialized: true,
 }));
@@ -58,8 +58,8 @@ app.use(passport.session());
 
 
 passport.use(new TwitterStrategy({
-    consumerKey: dotEnv.parsed.consumerKey,
-    consumerSecret: dotEnv.parsed.consumerSecret,
+    consumerKey: process.env.consumerKey,
+    consumerSecret: process.env.consumerSecret,
     callbackURL: "http://127.0.0.1:3000/login/callback"
   },
   function (req, token, tokenSecret, profile, done) {
