@@ -43,7 +43,7 @@ mongoose.connect(`${process.env.MONGODB_URI}`, (error) => {
   if (error) {
     console.log('Não consegui conectar');
   } else {
-    console.log(`CONECTAMOS EM ${dbName}`);
+    console.log(`CONECTAMOS EM banco de dados`);
   }
 });
 
