@@ -60,7 +60,7 @@ app.use(passport.session());
 passport.use(new TwitterStrategy({
     consumerKey: process.env.consumerKey,
     consumerSecret: process.env.consumerSecret,
-    callbackURL: "http://https://pure-forest-44229.herokuapp.com/login/callback"
+    callbackURL: "https://pure-forest-44229.herokuapp.com/login/callback"
   },
   function (req, token, tokenSecret, profile, done) {
     userModel.findOne({
