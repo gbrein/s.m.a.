@@ -1,7 +1,6 @@
 const express = require('express');
 const userModel = require('./models/userModel');
 const app = express();
-const dbName = 'projeto-final';
 const mongoose = require('mongoose');
 const hbs = require('hbs');
 const session = require('express-session');
@@ -9,6 +8,7 @@ const passport = require('passport');
 const TwitterStrategy = require('passport-twitter').Strategy;
 const bodyParser = require('body-parser');
 const dotEnv = require('dotenv').config();
+const dbName = process.env.dbName;
 const twit = require('twit');
 const {
   ensureAuthenticated
@@ -39,7 +39,7 @@ app.use(
   }),
 );
 
-mongoose.connect(`mongodb://localhost/${dbName}`, (error) => {
+mongoose.connect(`mongodb://${process.env.dbUser}:${process.env.dbPassword}@ds133865.mlab.com:33865/${dbName}`, (error) => {
   if (error) {
     console.log('Não consegui conectar');
   } else {
