@@ -1,7 +1,6 @@
 const express = require('express');
 const userModel = require('./models/userModel');
 const app = express();
-const dbName = 'projeto-final';
 const mongoose = require('mongoose');
 const hbs = require('hbs');
 const session = require('express-session');
@@ -9,15 +8,22 @@ const passport = require('passport');
 const TwitterStrategy = require('passport-twitter').Strategy;
 const bodyParser = require('body-parser');
 const dotEnv = require('dotenv').config();
+const dbName = process.env.dbName;
 const twit = require('twit');
+const {
+  get_entities,
+  get_sentiments,
+  get_key_phrases
+} = require('./cognitives/azure')
+
 const {
   ensureAuthenticated
 } = require('connect-ensure-authenticated');
 const client = new twit({
-  consumer_key: dotEnv.parsed.consumerKey,
-  consumer_secret: dotEnv.parsed.consumerSecret,
-  access_token: dotEnv.parsed.accessToken,
-  access_token_secret: dotEnv.parsed.acessSecret
+  consumer_key: process.env.consumerKey,
+  consumer_secret: process.env.consumerSecret,
+  access_token: process.env.accessToken,
+  access_token_secret: process.env.acessSecret
 
 });
 
@@ -39,16 +45,16 @@ app.use(
   }),
 );
 
-mongoose.connect(`mongodb://localhost/${dbName}`, (error) => {
+mongoose.connect(`${process.env.MONGODB_URI}`, (error) => {
   if (error) {
     console.log('Não consegui conectar');
   } else {
-    console.log(`CONECTAMOS EM ${dbName}`);
+    console.log(`CONECTAMOS EM banco de dados`);
   }
 });
 
 app.use(session({
-  secret: dotEnv.parsed.secret,
+  secret: process.env.secret,
   resave: true,
   saveUninitialized: true,
 }));
@@ -58,8 +64,8 @@ app.use(passport.session());
 
 
 passport.use(new TwitterStrategy({
-    consumerKey: dotEnv.parsed.consumerKey,
-    consumerSecret: dotEnv.parsed.consumerSecret,
+    consumerKey: process.env.consumerKey,
+    consumerSecret: process.env.consumerSecret,
     callbackURL: "http://127.0.0.1:3000/login/callback"
   },
   function (req, token, tokenSecret, profile, done) {
@@ -125,6 +131,34 @@ app.get('/logoff', (request, response) => {
   response.redirect('/');
 });
 
+app.get('analizys', (request, response) =>{
+
+});
+
+app.get('userDetails', (request, response) =>{
+
+});
+
+app.get('newAnalizys', (request, response) =>{
+
+});
+
+app.get('result', (request, response) =>{
+
+});
+
+app.get('event', (request, response) =>{
+
+});
+
+app.get('editAnalizys', (request, response) =>{
+
+});
+
+app.get('createEvent', (request, response) =>{
+
+});
+
 app.get('/login/twitter', passport.authenticate('twitter'));
 
 app.get('/login/callback',
@@ -140,11 +174,28 @@ app.get('/logedUser', ensureAuthenticated(), (request, response) => {
     include_rts: false
   }).then((data) => {
     let tweets = data.data.map((element) => {
-      // console.log(element.text);
       return element.text
     });
-    response.render('logedUser', {tweets, layout: 'layoutLoged.hbs'});
-  }); 
+    let arrTweets = []
+    tweets.forEach((element, idx) => {
+      arrTweets.push({
+        "id": idx + 1,
+        "text": element
+      })
+    });
+    let tweetsPayload = {
+      "documents": arrTweets
+    };
+    get_entities(tweetsPayload);
+    get_sentiments(tweetsPayload);
+    get_key_phrases(tweetsPayload);
+    response.render('logedUser', {
+      tweets,
+      layout: 'layoutLoged.hbs'
+    });
+  });
 });
+
+//teste servicos cognitovos
 
 module.exports = app;
