@@ -9,6 +9,8 @@ const TwitterStrategy = require('passport-twitter').Strategy;
 const bodyParser = require('body-parser');
 const dotEnv = require('dotenv').config();
 const dbName = process.env.dbName;
+const Cognitive = require('./models/congnitive');
+let teste;
 const twit = require('twit');
 const {
   get_entities,
@@ -74,7 +76,7 @@ passport.use(new TwitterStrategy({
     }).then((currentUser) => {
       // console.log(profile);
       if (currentUser) {
-        console.log(`User is: ${currentUser}`);
+        // console.log(`User is: ${currentUser}`);
         done(null, currentUser);
       } else {
         new userModel({
@@ -115,10 +117,7 @@ app.get('/loginUser', (request, response) => {
 });
 
 // app.get('/logedUser', ensureAuthenticated(), (request, response) => {
-//   console.log(request.user);
-//   response.render('logedUser', {
-//     layout: 'layoutLoged.hbs'
-//   });
+//   response.render('logedUser', {layout: 'layoutLoged.hbs'});
 // });
 
 app.get('/logout', (request, response) => {
@@ -131,31 +130,28 @@ app.get('/logoff', (request, response) => {
   response.redirect('/');
 });
 
-app.get('analizys', (request, response) =>{
+
+app.get('userDetails', (request, response) => {
 
 });
 
-app.get('userDetails', (request, response) =>{
+app.get('newAnalizys', (request, response) => {
 
 });
 
-app.get('newAnalizys', (request, response) =>{
+app.get('result', (request, response) => {
 
 });
 
-app.get('result', (request, response) =>{
+app.get('event', (request, response) => {
 
 });
 
-app.get('event', (request, response) =>{
+app.get('editAnalizys', (request, response) => {
 
 });
 
-app.get('editAnalizys', (request, response) =>{
-
-});
-
-app.get('createEvent', (request, response) =>{
+app.get('createEvent', (request, response) => {
 
 });
 
@@ -176,19 +172,47 @@ app.get('/logedUser', ensureAuthenticated(), (request, response) => {
     let tweets = data.data.map((element) => {
       return element.text
     });
-    let arrTweets = []
+    const arrTweets = [];
     tweets.forEach((element, idx) => {
       arrTweets.push({
         "id": idx + 1,
         "text": element
       })
     });
-    let tweetsPayload = {
+    const tweetsPayload = {
       "documents": arrTweets
     };
-    get_entities(tweetsPayload);
-    get_sentiments(tweetsPayload);
-    get_key_phrases(tweetsPayload);
+    const twitterId = request.session.passport.user.twitterID;
+    userModel.findOne({
+        twitterID: twitterId
+      })
+      .then(user => {
+        Promise
+          .all(
+            [get_entities(tweetsPayload),
+              get_key_phrases(tweetsPayload),
+              get_sentiments(tweetsPayload)
+            ]
+          )
+          .then(
+            element => {
+              console.log(element[2])
+              let tags = new Cognitive({
+                _id: new mongoose.Types.ObjectId(),
+                user: user.id,
+                sentimentTags: element[0],
+                keyPhrase: element[1],
+                avarageRate: element[2],
+              }).save(err => {
+                if (err) {
+                  console.log('erro:', err);
+                } else {
+                  console.log('Salvei a Tag')
+                }
+              });
+            }
+          )
+      })
     response.render('logedUser', {
       tweets,
       layout: 'layoutLoged.hbs'
