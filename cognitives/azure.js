@@ -1,74 +1,61 @@
-let https = require ('https');
-let accessKey = '99581ad44d6d454abcc5df216413bcd0';
-let uri = 'brazilsouth.api.cognitive.microsoft.com';
-let pathS = '/text/analytics/v2.1/sentiment';
-let pathK = '/text/analytics/v2.1/keyPhrases';
-let pathE = '/text/analytics/v2.1/entities';
+const https = require('https');
 
-let response_handler = function (response) {
-  let body = '';
-  response.on ('data', function (d) {
-      body += d;
-  });
-  response.on ('end', function () {
-      let body_ = JSON.parse (body);
-      let body__ = JSON.stringify (body_, null, '  ');
-      console.log (body__);
-  });
-  response.on ('error', function (e) {
-      console.log ('Error: ' + e.message);
-  });
+const accessKey = '99581ad44d6d454abcc5df216413bcd0';
+const uri = 'https://brazilsouth.api.cognitive.microsoft.com';
+const pathS = '/text/analytics/v2.1/sentiment';
+const pathK = '/text/analytics/v2.1/keyPhrases';
+const pathE = '/text/analytics/v2.1/entities';
+const axios = require('axios');
+
+const reqaxios = axios.create({
+  baseURL: uri,
+  timeout: 1000,
+  headers: {
+    'Ocp-Apim-Subscription-Key': accessKey,
+    'Content-Type': 'application/json'
+  },
+});
+const get_key_phrases = function (documents) {
+  const body = JSON.stringify(documents);
+  return reqaxios.post(pathK, body)
+    .then(response => {
+      let key_phrases = response.data.documents;
+      let arr_keys = [];
+      let arr_keys2 = [];
+      key_phrases.forEach(element =>
+        arr_keys.push(element.keyPhrases)
+      );
+     return (arr_keys.join(',').split(' ').join(','));
+
+    })
+    .catch(err => console.log('erro:', err));
 };
 
-let get_key_phrases = function (documents) {
-  let body = JSON.stringify (documents);
+const get_sentiments = function (documents) {
+  const body = JSON.stringify(documents);
+  return reqaxios.post(pathS, body)
+    .then(response => {
+      let sentiments = response.data.documents
+      let arrSentiments = [];
+      sentiments.forEach(element => {
+        arrSentiments.push(element.score);
+      });
+      return arrSentiments.reduce(function (a, b) {
+        return a + b
+      }) / arrSentiments.length;
+    })
+    .catch(err => console.log('erro:', err));
+};
 
-  let request_params = {
-      method : 'POST',
-      hostname : uri,
-      path : pathK,
-      headers : {
-          'Ocp-Apim-Subscription-Key' : accessKey,
-      }
-  };
+const get_entities = (documents) => {
+  const body = JSON.stringify(documents);
+  return reqaxios.post(pathE, body)
+    .then(response => JSON.stringify(response.data.documents))
+    .catch(err => console.log('erro:', err));
+};
 
-  let req = https.request (request_params, response_handler);
-  req.write (body);
-  req.end ();
-}
-
-let get_sentiments = function (documents) {
-  let body = JSON.stringify (documents);
-
-  let request_params = {
-      method : 'POST',
-      hostname : uri,
-      path : pathS,
-      headers : {
-          'Ocp-Apim-Subscription-Key' : accessKey,
-      }
-  };
-
-  let req = https.request (request_params, response_handler);
-  req.write (body);
-  req.end ();
-}
-
-let get_entities = function (documents) {
-  let body = JSON.stringify (documents);
-
-  let request_params = {
-      method : 'POST',
-      hostname : uri,
-      path : pathE,
-      headers : {
-          'Ocp-Apim-Subscription-Key' : accessKey,
-      }
-  };
-
-  let req = https.request (request_params, response_handler);
-  req.write (body);
-  req.end ();
-}
-
-module.exports = {get_key_phrases,get_entities,get_sentiments};
+module.exports = {
+  get_key_phrases,
+  get_entities,
+  get_sentiments
+};
