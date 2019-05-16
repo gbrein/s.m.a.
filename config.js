@@ -165,61 +165,62 @@ app.get('/login/callback',
 
 app.get('/logedUser', ensureAuthenticated(), (request, response) => {
   client.get('statuses/user_timeline', {
-    count: 20,
+    count: 10,
     exclude_replies: true,
     include_rts: false
   }).then((data) => {
     let tweets = data.data.map((element) => {
       return element.text
     });
-    const arrTweets = [];
-    tweets.forEach((element, idx) => {
-      arrTweets.push({
-        "id": idx + 1,
-        "text": element
-      })
-    });
-    const tweetsPayload = {
-      "documents": arrTweets
-    };
-    const twitterId = request.session.passport.user.twitterID;
-    userModel.findOne({
-        twitterID: twitterId
-      })
-      .then(user => {
-        Promise
-          .all(
-            [get_entities(tweetsPayload),
-              get_key_phrases(tweetsPayload),
-              get_sentiments(tweetsPayload)
-            ]
-          )
-          .then(
-            element => {
-              console.log(element[2])
-              let tags = new Cognitive({
-                _id: new mongoose.Types.ObjectId(),
-                user: user.id,
-                sentimentTags: element[0],
-                keyPhrase: element[1],
-                avarageRate: element[2],
-              }).save(err => {
-                if (err) {
-                  console.log('erro:', err);
-                } else {
-                  console.log('Salvei a Tag')
-                }
-              });
-            }
-          )
-      })
+    const info = data.data;
     response.render('logedUser', {
-      tweets,
+      info,
       layout: 'layoutLoged.hbs'
     });
   });
 });
 
-//teste servicos cognitovos
-
+function cognitive(tweets){
+  const arrTweets = [];
+  tweets.forEach((element, idx) => {
+    arrTweets.push({
+      "id": idx + 1,
+      "text": element
+    })
+  });
+  const tweetsPayload = {
+    "documents": arrTweets
+  };
+  const twitterId = request.session.passport.user.twitterID;
+  userModel.findOne({
+      twitterID: twitterId
+    })
+    .then(user => {
+      Promise
+        .all(
+          [get_entities(tweetsPayload),
+            get_key_phrases(tweetsPayload),
+            get_sentiments(tweetsPayload)
+          ]
+        )
+        .then(
+          element => {
+            console.log(element[2])
+            let tags = new Cognitive({
+              _id: new mongoose.Types.ObjectId(),
+              user: user.id,
+              sentimentTags: element[0],
+              keyPhrase: element[1],
+              avarageRate: element[2],
+            }).save(err => {
+              if (err) {
+                console.log('erro:', err);
+              } else {
+                console.log('Salvei a Tag')
+              }
+            });
+          }
+        )
+    })
+}
 module.exports = app;
