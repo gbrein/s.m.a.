@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 const https = require('https');
 
 const accessKey = '99581ad44d6d454abcc5df216413bcd0';
@@ -12,19 +13,27 @@ const reqaxios = axios.create({
   timeout: 1000,
   headers: {
     'Ocp-Apim-Subscription-Key': accessKey,
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   },
 });
+
+const saveTweet = function (documents) {
+  const body = documents.documents;
+  const arrBody = [];
+  body.forEach((element) => {
+    arrBody.push(element.text);
+  });
+  let arrBody2 = JSON.stringify(arrBody).split(',');
+  return JSON.stringify(arrBody2);
+};
 const get_key_phrases = function (documents) {
   const body = JSON.stringify(documents);
   return reqaxios.post(pathK, body)
-    .then(response => {
-      let key_phrases = response.data.documents;
-      let arr_keys = [];
-      key_phrases.forEach(element =>
-        arr_keys.push(element.keyPhrases)
-      );
-     return (arr_keys.join(',').split(' ').join(','));
+    .then((response) => {
+      const key_phrases = response.data.documents;
+      const arr_keys = [];
+      key_phrases.forEach(element => arr_keys.push(element.keyPhrases), );
+      return (arr_keys.join(',').split(' ').join(','));
     })
     .catch(err => console.log('erro:', err));
 };
@@ -32,13 +41,13 @@ const get_key_phrases = function (documents) {
 const get_sentiments = function (documents) {
   const body = JSON.stringify(documents);
   return reqaxios.post(pathS, body)
-    .then(response => {
-      let sentiments = response.data.documents
-      let arrSentiments = [];
-      sentiments.forEach(element => {
+    .then((response) => {
+      const sentiments = response.data.documents;
+      const arrSentiments = [];
+      sentiments.forEach((element) => {
         arrSentiments.push(element.score);
       });
-      return arrSentiments.reduce(function (a, b) {
+      return arrSentiments.reduce((a, b) => {
         return a + b
       }) / arrSentiments.length;
     })
@@ -48,20 +57,21 @@ const get_sentiments = function (documents) {
 const get_entities = (documents) => {
   const body = JSON.stringify(documents);
   return reqaxios.post(pathE, body)
-    .then(response => {
-      let body2 = response.data.documents;
-      let arrBody = [];
-      body2.forEach(element =>{
+    .then((response) => {
+      const body2 = response.data.documents;
+      const arrBody = [];
+      body2.forEach((element) => {
         arrBody.push(element.entities);
-      })
+      });
       // console.log(arrBody)
-     return JSON.stringify(arrBody)
-    } )
+      return JSON.stringify(arrBody);
+    })
     .catch(err => console.log('erro:', err));
 };
 
 module.exports = {
+  saveTweet,
   get_key_phrases,
   get_entities,
-  get_sentiments
+  get_sentiments,
 };

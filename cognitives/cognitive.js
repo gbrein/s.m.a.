@@ -5,6 +5,7 @@ const {
   get_entities,
   get_sentiments,
   get_key_phrases,
+  saveTweet,
 } = require('../cognitives/azure');
 
 function cognitive(tweets, request, response) {
@@ -25,9 +26,11 @@ function cognitive(tweets, request, response) {
     .then((user) => {
       Promise
         .all(
-          [get_entities(tweetsPayload),
+          [
+            get_entities(tweetsPayload),
             get_key_phrases(tweetsPayload),
             get_sentiments(tweetsPayload),
+            saveTweet(tweetsPayload),
           ],
         )
         .then(
@@ -39,6 +42,7 @@ function cognitive(tweets, request, response) {
               sentimentTags: element[0],
               keyPhrase: element[1],
               avarageRate: element[2],
+              tweets: element[3],
             }).save((err) => {
               if (err) {
                 console.log('erro:', err);

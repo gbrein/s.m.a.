@@ -7,11 +7,15 @@ const passport = require('passport');
 const TwitterStrategy = require('passport-twitter').Strategy;
 const bodyParser = require('body-parser');
 const dotEnv = require('dotenv').config();
-const {dbName} = process.env;
+const deleteAnalyze = require('./Controller/delete');
+const editAnalyze = require('./Controller/edit');
+const {
+  dbName
+} = process.env;
 const Cognitive = require('./models/congnitive');
 const cognitive = require('./cognitives/cognitive');
 const twit = require('twit');
-
+const moment = require('moment');
 const {
   ensureAuthenticated,
 } = require('connect-ensure-authenticated');
@@ -62,31 +66,31 @@ app.use(passport.session());
 
 
 passport.use(new TwitterStrategy({
-  consumerKey: process.env.consumerKey,
-  consumerSecret: process.env.consumerSecret,
-  callbackURL: 'http://127.0.0.1:3000/login/callback',
-},
-((req, token, tokenSecret, profile, done) => {
-  userModel.findOne({
-    twitterID: profile.id,
-  }).then((currentUser) => {
-    // console.log(profile);
-    if (currentUser) {
-      // console.log(`User is: ${currentUser}`);
-      done(null, currentUser);
-    } else {
-      new userModel({
-        username: profile.username,
-        twitterID: profile.id,
-        name: profile.displayName,
-        thumbnail: profile.photos[0].value,
-      }).save().then((newUser) => {
-        console.log(`new user created:${  newUser}`);
-        done(null, newUser);
-      });
-    }
-  });
-})));
+    consumerKey: process.env.consumerKey,
+    consumerSecret: process.env.consumerSecret,
+    callbackURL: 'http://127.0.0.1:3000/login/callback',
+  },
+  ((req, token, tokenSecret, profile, done) => {
+    userModel.findOne({
+      twitterID: profile.id,
+    }).then((currentUser) => {
+      // console.log(profile);
+      if (currentUser) {
+        // console.log(`User is: ${currentUser}`);
+        done(null, currentUser);
+      } else {
+        new userModel({
+          username: profile.username,
+          twitterID: profile.id,
+          name: profile.displayName,
+          thumbnail: profile.photos[0].value,
+        }).save().then((newUser) => {
+          console.log(`new user created:${  newUser}`);
+          done(null, newUser);
+        });
+      }
+    });
+  })));
 
 passport.serializeUser((user, done) => {
   done(null, user);
@@ -125,20 +129,7 @@ app.get('/logoff', (request, response) => {
   response.redirect('/');
 });
 
-
-app.get('userDetails', (request, response) => {
-
-});
-
-app.get('newAnalizys', (request, response) => {
-
-});
-
 app.get('event', (request, response) => {
-
-});
-
-app.get('editAnalizys', (request, response) => {
 
 });
 
@@ -160,7 +151,7 @@ app.get('/newanalizys', ensureAuthenticated(), (request, response) => {
     exclude_replies: true,
     include_rts: false,
   }).then((data) => {
-    const infoTwitter = data.data;
+    let infoTwitter = data.data;
     response.render('newanalizys', {
       infoTwitter,
       layout: 'layoutLoged.hbs',
@@ -178,17 +169,35 @@ app.get('/analizys', (request, response) => {
   const id = request.session.passport.user;
   // console.log(id._id);
   Cognitive.find({
-    user: id._id,
-  })
+      user: id._id,
+    })
     .then((user) => {
       // console.log(user);
-      if (user.length != 0) {
-        response.render('analizys', { user, layout: 'layoutLoged.hbs' });
+      if (user.length!=0) {
+        response.render('analizys', {
+          user,
+          layout: 'layoutLoged.hbs'
+        });
       } else {
         response.redirect('newanalizys');
       }
     });
 });
 
+app.get('/analyze/:id', (request, response) => {
+  const id = request.params.id;
+  console.log(id);
+})
+
+app.get('/analyze/delete/:id', (request, response) => {
+  const id = request.params.id;
+  deleteAnalyze(id);
+  response.redirect('/analizys');
+})
+
+app.get('/analyze/edit/:id', (request, response) => {
+  const id = request.params.id;
+  editAnalyze(id, response);
+});
 
 module.exports = app;
