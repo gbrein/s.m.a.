@@ -21,12 +21,10 @@ const get_key_phrases = function (documents) {
     .then(response => {
       let key_phrases = response.data.documents;
       let arr_keys = [];
-      let arr_keys2 = [];
       key_phrases.forEach(element =>
         arr_keys.push(element.keyPhrases)
       );
      return (arr_keys.join(',').split(' ').join(','));
-
     })
     .catch(err => console.log('erro:', err));
 };
@@ -50,7 +48,15 @@ const get_sentiments = function (documents) {
 const get_entities = (documents) => {
   const body = JSON.stringify(documents);
   return reqaxios.post(pathE, body)
-    .then(response => JSON.stringify(response.data.documents))
+    .then(response => {
+      let body2 = response.data.documents;
+      let arrBody = [];
+      body2.forEach(element =>{
+        arrBody.push(element.entities);
+      })
+      // console.log(arrBody)
+     return JSON.stringify(arrBody)
+    } )
     .catch(err => console.log('erro:', err));
 };
 
