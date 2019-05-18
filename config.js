@@ -104,7 +104,7 @@ passport.deserializeUser(function (id, done) {
 
 app.get('/', (request, response) => {
   if (request.user) {
-    response.render('logedUser', {
+    response.render('analizys', {
       layout: 'layoutLoged.hbs'
     });
   } else {
@@ -139,10 +139,6 @@ app.get('newAnalizys', (request, response) => {
 
 });
 
-app.get('result', (request, response) => {
-
-});
-
 app.get('event', (request, response) => {
 
 });
@@ -159,28 +155,46 @@ app.get('/login/twitter', passport.authenticate('twitter'));
 
 app.get('/login/callback',
   passport.authenticate('twitter', {
-    successRedirect: '/logedUser',
+    successRedirect: '/analizys',
     failureRedirect: '/loginUser',
   }));
 
-app.get('/logedUser', ensureAuthenticated(), (request, response) => {
+app.get('/newanalizys', ensureAuthenticated(), (request, response) => {
   client.get('statuses/user_timeline', {
     count: 10,
     exclude_replies: true,
     include_rts: false
   }).then((data) => {
-    let tweets = data.data.map((element) => {
-      return element.text
-    });
-    const info = data.data;
-    response.render('logedUser', {
-      info,
+    const infoTwitter = data.data;
+    response.render('newanalizys', {
+      infoTwitter,
       layout: 'layoutLoged.hbs'
     });
   });
 });
 
-function cognitive(tweets){
+app.post('/result', (request, response) => {
+  let tweets = request.body.texto;
+  cognitive(tweets, request, response);
+  response.redirect('analizys');
+});
+
+app.get('/analizys', (request, response) => {
+  const id = request.session.passport.user;
+  // console.log(id._id);
+  Cognitive.find({
+      user: id._id,
+    })
+    .then(user => {
+      // console.log(user);
+      if (user.length!=0) {
+      response.render('analizys', {user, layout: 'layoutLoged.hbs'})
+    } else{
+      response.redirect('newanalizys');
+    }})
+});
+
+function cognitive(tweets, request, response) {
   const arrTweets = [];
   tweets.forEach((element, idx) => {
     arrTweets.push({
@@ -205,7 +219,7 @@ function cognitive(tweets){
         )
         .then(
           element => {
-            console.log(element[2])
+            // console.log(element[2])
             let tags = new Cognitive({
               _id: new mongoose.Types.ObjectId(),
               user: user.id,
@@ -221,6 +235,8 @@ function cognitive(tweets){
             });
           }
         )
-    })
+    });
 }
+
+
 module.exports = app;

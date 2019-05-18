@@ -76,6 +76,25 @@ body {
   margin-left: 15%;
 }
 
+#tweet-sec {
+  color: white;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  /* justify-content: space-between; */
+  width: 33%;
+}
+
 /* * {
   border: black 1px solid;
 } */
+
+.box-result {
+  display: flex;
+  color: white;
+}
+
+.mood {
+  display: flex;
+  margin:2em;
+}
