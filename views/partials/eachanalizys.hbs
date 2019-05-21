@@ -1,0 +1,10 @@
+<div class="each-analyze">
+    <p>Key-Words: {{this.keyPhrase}}</p>
+    <p>Mood Rate: {{this.avarageRate}}</p>
+    <p>Last Update: {{this.updatedAt}}</p>
+    <div class="btn-group">
+        <a href="/analyze/edit/{{this._id}}" class="btn btn-primary mood">Edit</a>
+        <a href="/analyze/{{this._id}}" class="btn btn-primary mood">Analyze Mood</a>
+        <a href="/analyze/delete/{{this._id}}" class="btn btn-danger mood">Delete</a>
+    </div>
+</div>

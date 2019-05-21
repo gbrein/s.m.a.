@@ -10,8 +10,11 @@ const Cognitive = mongoose.model(
     },
     sentimentTags: String,
     keyPhrase: String,
+    tweets: String,
     avarageRate: mongoose.Decimal128,
-  }),
+  },
+  {timestamps: true}
+  ),
 );
 
 module.exports = Cognitive;
