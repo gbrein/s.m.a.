@@ -54,4 +54,6 @@ function cognitive(tweets, request, response) {
         );
     });
 }
+
+
 module.exports = cognitive;

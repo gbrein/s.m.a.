@@ -9,6 +9,14 @@ const bodyParser = require('body-parser');
 const dotEnv = require('dotenv').config();
 const deleteAnalyze = require('./Controller/delete');
 const editAnalyze = require('./Controller/edit');
+const multer = require('multer');
+const Event = require('./models/event');
+const upload = multer({
+  dest: './uploads'
+});
+
+const cognitiveSentiment = require('./cognitives/cognitiveSentiment');
+
 const {
   dbName
 } = process.env;
@@ -133,10 +141,6 @@ app.get('event', (request, response) => {
 
 });
 
-app.get('createEvent', (request, response) => {
-
-});
-
 app.get('/login/twitter', passport.authenticate('twitter'));
 
 app.get('/login/callback',
@@ -173,7 +177,7 @@ app.get('/analizys', (request, response) => {
     })
     .then((user) => {
       // console.log(user);
-      if (user.length!=0) {
+      if (user.length != 0) {
         response.render('analizys', {
           user,
           layout: 'layoutLoged.hbs'
@@ -199,5 +203,39 @@ app.get('/analyze/edit/:id', (request, response) => {
   const id = request.params.id;
   editAnalyze(id, response);
 });
+
+
+app.post('/update', (request, response) => {
+  const tweets = request.body.texto;
+  console.log(tweets);
+});
+
+app.get('/newevent', (request, response) => {
+  response.render('newevent');
+});
+
+app.post('/upload', upload.single('photo'), (request, response) => {
+ 
+  const event = new Event({
+    name: request.body.oName,
+    date: request.body.date,
+    email: request.body.Email,
+    title: request.body.Title,
+    type: request.body.type,
+    description: request.body.description,
+    city: request.body.city,
+    zip: request.body.zip,
+    address: request.body.address,
+    state: request.body.state,
+    link: request.body.link,
+    path: `/uploads/${request.file.filename}`,
+    originalName: request.file.originalname,
+  });
+  event.save((err) => {
+    cognitiveScore: cognitiveSentiment(request.body.description, event),
+    response.redirect('/');
+  });
+});
+
 
 module.exports = app;

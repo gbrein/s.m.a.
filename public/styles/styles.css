@@ -96,21 +96,25 @@ body {
 
 .mood {
   display: flex;
-  margin:2em;
+  margin: 2em;
 }
 
-.box-result{
+.box-result {
   display: flex;
   flex-wrap: wrap;
 }
 
-.each-analyze{
+.each-analyze {
   justify-content: space-around;
-  margin:1em;
+  margin: 1em;
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 15px;
 }
 
-.hidden{
-  display:none
+.hidden {
+  display: none
+}
+
+.form-label {
+  color: white;
 }

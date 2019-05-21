@@ -1,1 +1,10 @@
-<h1>{{data.tweets}}</h1>
+<form action="/update" method="POST">
+<div class="box-result">
+        {{#each edit}}
+        {{>eachedit}}
+        {{/each}}
+    </div>
+    <div class="row">
+        <input type="submit" value="Lets Go" class="btn btn-primary">
+    </div>
+</form>

@@ -23,8 +23,9 @@ const saveTweet = function (documents) {
   body.forEach((element) => {
     arrBody.push(element.text);
   });
-  let arrBody2 = JSON.stringify(arrBody).split(',');
-  return JSON.stringify(arrBody2);
+  let arrbody2 = removeWhiteSpaceFromArray(arrBody);
+  // console.log(JSON.stringify(arrbody2))
+  return JSON.stringify(arrbody2);
 };
 const get_key_phrases = function (documents) {
   const body = JSON.stringify(documents);
@@ -75,3 +76,7 @@ module.exports = {
   get_entities,
   get_sentiments,
 };
+
+function removeWhiteSpaceFromArray(array){
+  return array.filter(item => item.trim() !== '');
+}
