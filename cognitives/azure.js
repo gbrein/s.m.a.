@@ -1,7 +1,7 @@
 /* eslint-disable func-names */
 const https = require('https');
 
-const accessKey = '99581ad44d6d454abcc5df216413bcd0';
+const {accessKey} = process.env;
 const uri = 'https://brazilsouth.api.cognitive.microsoft.com';
 const pathS = '/text/analytics/v2.1/sentiment';
 const pathK = '/text/analytics/v2.1/keyPhrases';
@@ -25,7 +25,7 @@ const saveTweet = function (documents) {
   });
   let arrbody2 = removeWhiteSpaceFromArray(arrBody);
   // console.log(JSON.stringify(arrbody2))
-  return JSON.stringify(arrbody2);
+  return arrbody2;
 };
 const get_key_phrases = function (documents) {
   const body = JSON.stringify(documents);
@@ -41,13 +41,16 @@ const get_key_phrases = function (documents) {
 
 const get_sentiments = function (documents) {
   const body = JSON.stringify(documents);
+  console.log(documents);
   return reqaxios.post(pathS, body)
     .then((response) => {
+      console.log(response.data.documents);
       const sentiments = response.data.documents;
       const arrSentiments = [];
       sentiments.forEach((element) => {
         arrSentiments.push(element.score);
       });
+
       return arrSentiments.reduce((a, b) => {
         return a + b
       }) / arrSentiments.length;

@@ -1,0 +1,12 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 class="text-white">Based on your analizys you are: {{moodRate}}</h1><br>
+      <div class="row">
+        {{#each arrNear}}
+        {{>events}}
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</div>

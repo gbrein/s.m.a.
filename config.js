@@ -1,24 +1,32 @@
 const express = require('express');
+
 const app = express();
 const mongoose = require('mongoose');
 const hbs = require('hbs');
 const session = require('express-session');
+const multerS3 = require('multer-s3');
+const aws = require('aws-sdk');
 const passport = require('passport');
 const TwitterStrategy = require('passport-twitter').Strategy;
 const bodyParser = require('body-parser');
 const dotEnv = require('dotenv').config();
 const deleteAnalyze = require('./Controller/delete');
-const editAnalyze = require('./Controller/edit');
+const getResult = require('./Controller/getresult');
+const cognitiveSentiment = require('./cognitives/cognitiveSentiment');
+const upload = require('./Controller/upload');
+const {
+  editAnalyze,
+  editCognitive,
+} = require('./Controller/edit');
 const multer = require('multer');
 const Event = require('./models/event');
-const upload = multer({
-  dest: './uploads'
-});
 
-const cognitiveSentiment = require('./cognitives/cognitiveSentiment');
+// const upload = multer({
+//   dest: './uploads',
+// });
 
 const {
-  dbName
+  dbName,
 } = process.env;
 const Cognitive = require('./models/congnitive');
 const cognitive = require('./cognitives/cognitive');
@@ -74,31 +82,31 @@ app.use(passport.session());
 
 
 passport.use(new TwitterStrategy({
-    consumerKey: process.env.consumerKey,
-    consumerSecret: process.env.consumerSecret,
-    callbackURL: 'http://127.0.0.1:3000/login/callback',
-  },
-  ((req, token, tokenSecret, profile, done) => {
-    userModel.findOne({
-      twitterID: profile.id,
-    }).then((currentUser) => {
-      // console.log(profile);
-      if (currentUser) {
-        // console.log(`User is: ${currentUser}`);
-        done(null, currentUser);
-      } else {
-        new userModel({
-          username: profile.username,
-          twitterID: profile.id,
-          name: profile.displayName,
-          thumbnail: profile.photos[0].value,
-        }).save().then((newUser) => {
-          console.log(`new user created:${  newUser}`);
-          done(null, newUser);
-        });
-      }
-    });
-  })));
+  consumerKey: process.env.consumerKey,
+  consumerSecret: process.env.consumerSecret,
+  callbackURL: 'http://127.0.0.1:3000/login/callback',
+},
+((req, token, tokenSecret, profile, done) => {
+  userModel.findOne({
+    twitterID: profile.id,
+  }).then((currentUser) => {
+    // console.log(profile);
+    if (currentUser) {
+      // console.log(`User is: ${currentUser}`);
+      done(null, currentUser);
+    } else {
+      new userModel({
+        username: profile.username,
+        twitterID: profile.id,
+        name: profile.displayName,
+        thumbnail: profile.photos[0].value,
+      }).save().then((newUser) => {
+        console.log(`new user created:${newUser}`);
+        done(null, newUser);
+      });
+    }
+  });
+})));
 
 passport.serializeUser((user, done) => {
   done(null, user);
@@ -155,7 +163,7 @@ app.get('/newanalizys', ensureAuthenticated(), (request, response) => {
     exclude_replies: true,
     include_rts: false,
   }).then((data) => {
-    let infoTwitter = data.data;
+    const infoTwitter = data.data;
     response.render('newanalizys', {
       infoTwitter,
       layout: 'layoutLoged.hbs',
@@ -171,16 +179,15 @@ app.post('/result', (request, response) => {
 
 app.get('/analizys', (request, response) => {
   const id = request.session.passport.user;
-  // console.log(id._id);
   Cognitive.find({
-      user: id._id,
-    })
+    user: id._id,
+  })
     .then((user) => {
       // console.log(user);
       if (user.length != 0) {
         response.render('analizys', {
           user,
-          layout: 'layoutLoged.hbs'
+          layout: 'layoutLoged.hbs',
         });
       } else {
         response.redirect('newanalizys');
@@ -188,26 +195,22 @@ app.get('/analizys', (request, response) => {
     });
 });
 
-app.get('/analyze/:id', (request, response) => {
-  const id = request.params.id;
-  console.log(id);
-})
-
 app.get('/analyze/delete/:id', (request, response) => {
-  const id = request.params.id;
+  const { id } = request.params;
   deleteAnalyze(id);
   response.redirect('/analizys');
-})
+});
 
 app.get('/analyze/edit/:id', (request, response) => {
-  const id = request.params.id;
+  const { id } = request.params;
   editAnalyze(id, response);
 });
 
 
 app.post('/update', (request, response) => {
   const tweets = request.body.texto;
-  console.log(tweets);
+  const { id } = request.body;
+  editCognitive(tweets, id, request, response);
 });
 
 app.get('/newevent', (request, response) => {
@@ -215,7 +218,7 @@ app.get('/newevent', (request, response) => {
 });
 
 app.post('/upload', upload.single('photo'), (request, response) => {
- 
+  
   const event = new Event({
     name: request.body.oName,
     date: request.body.date,
@@ -228,14 +231,18 @@ app.post('/upload', upload.single('photo'), (request, response) => {
     address: request.body.address,
     state: request.body.state,
     link: request.body.link,
-    path: `/uploads/${request.file.filename}`,
+    path: request.file.location,
     originalName: request.file.originalname,
   });
   event.save((err) => {
-    cognitiveScore: cognitiveSentiment(request.body.description, event),
+    cognitiveSentiment(request.body.description, event);
     response.redirect('/');
   });
 });
 
+app.get('/analyze/:id', (request, response) => {
+  const { id } = request.params;
+  getResult(id, response);
+});
 
 module.exports = app;
