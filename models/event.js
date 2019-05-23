@@ -16,6 +16,7 @@ const eventSchema = new Schema({
   link: String,
   originalName: String,
   cognitiveScore: Number,
+  eventScore: Number,
 
 }, {
   timestamps: { createdAt: "created_at", updatedAt: "updated_at" }

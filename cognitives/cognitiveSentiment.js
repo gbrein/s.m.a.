@@ -17,10 +17,9 @@ function cognitiveSentiment(description, event) {
   const payload = {
     documents: arr2,
   };
-
   get_sentiments(payload)
     .then((result) => {
-      Event.findOneAndUpdate({ _id: event._id }, { cognitiveScore: result })
+      Event.findOneAndUpdate({ _id: event._id }, { cognitiveScore: result, eventScore: 1 - result })
         .then();
     });
 }

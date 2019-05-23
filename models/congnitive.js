@@ -10,7 +10,7 @@ const Cognitive = mongoose.model(
     },
     sentimentTags: String,
     keyPhrase: String,
-    tweets: String,
+    tweets: Array,
     avarageRate: mongoose.Decimal128,
   },
   {timestamps: true}

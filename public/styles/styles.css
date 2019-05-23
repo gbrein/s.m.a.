@@ -118,3 +118,11 @@ body {
 .form-label {
   color: white;
 }
+
+.large-field {
+  width: 100%;
+}
+
+.text-white {
+  color: white;
+}

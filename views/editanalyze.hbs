@@ -1,6 +1,9 @@
-<form action="/update" method="POST">
+
+<form action="/update" class="form-event text-center border border-light p-5" method="POST">
+  <p class="h4 mb-4 form-label">Edit your Tweets</p>
 <div class="box-result">
-        {{#each edit}}
+  <input type="hidden" name="id" value="{{id}}">
+        {{#each arrTweets}}
         {{>eachedit}}
         {{/each}}
     </div>
