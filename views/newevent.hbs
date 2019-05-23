@@ -1,0 +1,43 @@
+<form class="form-event text-center border border-light p-5" action="/upload" method="POST"
+  enctype="multipart/form-data">
+
+  <p class="h4 mb-4 form-label">Contact us</p>
+  <input type="text" id="defaultContactFormName" name="oName" class="form-control mb-4" placeholder="Your Name">
+  <input type="email" id="defaultContactFormEmail" name="Email" class="form-control mb-4" placeholder="E-mail">
+  <input type="text" id="defaultContactFormName" name="Title" class="form-control mb-4" placeholder="Event Title">
+  <label for="example-datetime-local-input" class="col-2 col-form-label form-label">Date and time</label>
+  <input class="form-control mb-4" name="date" type="datetime-local" value="2018-02-19T13:45:00"
+    id="example-datetime-local-input">
+  <input type="text" class="form-control mb-4" id="inlineFormInputGroup" name="link" placeholder="Website">
+
+
+  <input type="text" class="form-control mb-4" name="city" id="validationCustom03" placeholder="City" required>
+  <input type="text" class="form-control  mb-4" name="state" id="validationCustom04" placeholder="State" required>
+  <input type="text" class="form-control  mb-4" name="address" id="validationCustom03" placeholder="Address" required>
+  <input type="text" class="form-control  mb-4" name="zip" id="validationCustom05" placeholder="Zip" required>
+
+
+  <label class="form-label">Type of Event</label>
+  <select name="type" class="browser-default custom-select mb-4">
+    <option value="" selected>Choose option</option>
+    <option value="1">Dance</option>
+    <option value="2">Concert</option>
+    <option value="3">Cinema</option>
+    <option value="4">Theater</option>
+  </select>
+
+
+  <div class="form-group">
+    <textarea class="form-control rounded-0" name="description" id="exampleFormControlTextarea2" rows="3"
+      placeholder="Description"></textarea>
+  </div>
+
+  <div class="custom-control custom-checkbox mb-4">
+    <input type="checkbox" class="custom-control-input" id="defaultContactFormCopy">
+    <label class="custom-control-label form-label" for="defaultContactFormCopy">Send me a copy of this message</label>
+  </div>
+  <label class="form-label ">Image Cover</label>
+  <input type="file" name="photo">
+  <button class="btn btn-info btn-block" type="submit">Send</button>
+
+</form>

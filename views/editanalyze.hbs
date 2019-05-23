@@ -1,0 +1,13 @@
+
+<form action="/update" class="form-event text-center border border-light p-5" method="POST">
+  <p class="h4 mb-4 form-label">Edit your Tweets</p>
+<div class="box-result">
+  <input type="hidden" name="id" value="{{id}}">
+        {{#each arrTweets}}
+        {{>eachedit}}
+        {{/each}}
+    </div>
+    <div class="row">
+        <input type="submit" value="Lets Go" class="btn btn-primary">
+    </div>
+</form>
