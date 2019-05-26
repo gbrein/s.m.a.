@@ -21,9 +21,6 @@ const {
 const multer = require('multer');
 const Event = require('./models/event');
 
-// const upload = multer({
-//   dest: './uploads',
-// });
 
 const {
   dbName,
@@ -85,6 +82,7 @@ passport.use(new TwitterStrategy({
   consumerKey: process.env.consumerKey,
   consumerSecret: process.env.consumerSecret,
   callbackURL: 'https://pure-forest-44229.herokuapp.com/login/callback',
+  // callbackURL: 'http://127.0.0.1:3000/login/callback',
 },
 ((req, token, tokenSecret, profile, done) => {
   userModel.findOne({
@@ -130,10 +128,6 @@ app.get('/', (request, response) => {
 app.get('/loginUser', (request, response) => {
   response.render('login');
 });
-
-// app.get('/logedUser', ensureAuthenticated(), (request, response) => {
-//   response.render('logedUser', {layout: 'layoutLoged.hbs'});
-// });
 
 app.get('/logout', (request, response) => {
   request.logout();

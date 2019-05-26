@@ -1,0 +1,25 @@
+.container-analy {
+    margin-top: 1em;
+}
+
+.btn-mood {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.box-result {
+    /* height: 36em; */
+    overflow: auto;
+    
+}
+
+.newtweet{
+    margin-bottom: 10em;
+}
+
+body {
+    overflow-x: hidden;
+}
+.all-text{
+    overflow: auto;
+}

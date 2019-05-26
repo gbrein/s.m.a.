@@ -1,11 +1,18 @@
-<h1>Your latest mood analyzis</h1>
+<div class="d-flex justify-content-center align-items-center align-content-center main-phrase"
+  style="background-color:#66b5d7;">
+  <div class="container d-flex justify-content-center align-items-center align-content-center"><strong
+      class="d-flex justify-content-center align-items-center align-content-center" style="font-size:100%;">Your Latest
+      Mood Analyzes<br></strong>
+      </div>
+</div>
 <div class="box-result">
   {{#each user}}
   {{>eachanalizys}}
   {{/each}}
 </div>
-<br>
 <div class="row">
-<a href="newanalizys" class="btn btn-primary mood" role="button">Go With New Mood</a>
-<div class="row-space"></div>
+  <div class="col d-flex justify-content-center align-self-center"><a href="newanalizys"
+      class="btn btn-primary d-flex justify-content-center align-items-center align-content-center btn-mood" type="button">Go
+      With New Mood</a>
+      </div>
 </div>
