@@ -1,10 +1,19 @@
-<div class="each-analyze">
-    <p>Key-Words: {{this.keyPhrase}}</p>
-    <p>Mood Rate: {{this.avarageRate}}</p>
-    <p>Last Update: {{this.updatedAt}}</p>
-    <div class="btn-group">
-        <a href="/analyze/edit/{{this._id}}" class="btn btn-primary mood">Edit</a>
-        <a href="/analyze/{{this._id}}" class="btn btn-primary mood">Analyze Mood</a>
-        <a href="/analyze/delete/{{this._id}}" class="btn btn-danger mood">Delete</a>
+<div class="analyze">
+    <div class="container container-analy">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Mood Rate: {{this.avarageRate}}</h5>
+                <h6 class="text-muted card-subtitle mb-2">Key-Words: {{this.keyPhrase}}</h6>
+                <h6 class="text-muted card-subtitle mb-2">Last Update: {{this.updatedAt}}</h6>
+
+
+                <div class="btn-group" role="group"><a class="btn btn-primary btn-info" type="button"
+                        href="/analyze/edit/{{this._id}}">Edit</a>
+                    <a href="/analyze/{{this._id}}" class="btn btn-primary" type="button">Analyze
+                        Mood</a>
+                    <a href="/analyze/delete/{{this._id}}" class="btn btn-primary btn-danger" type="button">Delete</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

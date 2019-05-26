@@ -1,11 +1,17 @@
-<form action="/result" id="formTweets" method="POST">
+<div class="d-flex justify-content-center align-items-center align-content-center main-phrase"
+  style="background-color:#66b5d7;">
+  <div class="container d-flex justify-content-center align-items-center align-content-center"><strong
+      class="d-flex justify-content-center align-items-center align-content-center" style="font-size:100%;">Select your Tweets to Analyze<br></strong>
+      </div>
+</div>
+<form action="/result" id="formTweets" class="newtweet" method="POST">
     <div class="box-result">
         {{#each infoTwitter}}
         {{>tweets}}
         {{/each}}
     </div>
-    <div class="row">
-        <input type="submit" value="Lets Go" class="btn btn-primary">
+    <div class="col d-flex justify-content-center align-self-center">
+        <input type="submit" value="Lets Go" class="btn btn-primary d-flex justify-content-center align-items-center align-content-center btn-mood"> 
     </div>
 </form>
 <script type="text/javascript" src="../js/posttoresult.js"></script>

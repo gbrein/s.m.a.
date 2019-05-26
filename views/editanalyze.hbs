@@ -1,13 +1,17 @@
-
-<form action="/update" class="form-event text-center border border-light p-5" method="POST">
-  <p class="h4 mb-4 form-label">Edit your Tweets</p>
+<div class="d-flex justify-content-center align-items-center align-content-center main-phrase"
+  style="background-color:#66b5d7;">
+  <div class="container d-flex justify-content-center align-items-center align-content-center"><strong
+      class="d-flex justify-content-center align-items-center align-content-center" style="font-size:100%;">Edit your Analyze<br></strong>
+      </div>
+</div>
+<form action="/update" id="formTweets" class="newtweet form-group form-2" method="POST">
 <div class="box-result">
   <input type="hidden" name="id" value="{{id}}">
         {{#each arrTweets}}
         {{>eachedit}}
         {{/each}}
     </div>
-    <div class="row">
-        <input type="submit" value="Lets Go" class="btn btn-primary">
+    <div class="col d-flex justify-content-center align-self-center">
+        <input type="submit" value="Lets Go" class="btn btn-primary d-flex justify-content-center align-items-center align-content-center btn-mood"> 
     </div>
 </form>

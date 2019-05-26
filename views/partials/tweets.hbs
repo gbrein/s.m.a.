@@ -1,8 +1,15 @@
-<div class="each-tweet">
-    <img src="{{this.user.profile_image_url}}">
-    <h2>{{this.user.name}}</h2>
-    <p class="textt">{{this.text}}</p>
-    <p>{{this.entities.description}}</p>
-    <input type="checkbox" name="tweet-check" class="tweet-check">
-    <label for="gui">Select tweets to advance</label>
+<div class="analyze">
+    <div class="container container-analy">
+        <div class="card">
+            <div class="card-body">
+                <img src="{{this.user.profile_image_url}}">
+                <h5 class="card-title">{{this.user.name}}</h5>
+                <h6 class="text-muted card-subtitle mb-2">{{this.text}}</h6>
+                <h6 class="text-muted card-subtitle mb-2">{{this.entities.description}}</h6>
+                <input type="checkbox" name="tweet-check" class="tweet-check">
+                <label for="gui">Select tweet to advance</label>
+            </div>
+        </div>
+    </div>
 </div>
+
