@@ -5,6 +5,7 @@
       </div>
 </div>
 <form action="/update" id="formTweets" class="newtweet form-group form-2" method="POST">
+<input type="hidden" name="id" value="{{id}}">
 <div class="box-result">
   <input type="hidden" name="id" value="{{id}}">
         {{#each arrTweets}}

@@ -1,12 +1,16 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-12">
-      <h1 class="text-white">Based on your analizys you are: {{moodRate}}</h1><br>
-      <div class="row">
-        {{#each arrNear}}
-        {{>events}}
-        {{/each}}
-      </div>
-    </div>
+<div class="d-flex justify-content-center align-items-center align-content-center main-phrase"
+  style="background-color:#66b5d7;">
+  <div class="container d-flex justify-content-center align-items-center align-content-center"><strong
+      class="d-flex justify-content-center align-items-center align-content-center" style="font-size:100%;">Based on
+      your analizys you are: {{moodRate}}<br></strong>
   </div>
+</div>
+<div class="box-result2">
+<div class="analyze">
+  <div class="container d-flex justify-content-center align-items-center align-content-center flex-wrap container-analy">
+    {{#each arrNear}}
+    {{>events}}
+    {{/each}}
+  </div>
+</div>
 </div>

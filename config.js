@@ -81,8 +81,8 @@ app.use(passport.session());
 passport.use(new TwitterStrategy({
   consumerKey: process.env.consumerKey,
   consumerSecret: process.env.consumerSecret,
-  callbackURL: 'https://pure-forest-44229.herokuapp.com/login/callback',
-  // callbackURL: 'http://127.0.0.1:3000/login/callback',
+  // callbackURL: 'https://pure-forest-44229.herokuapp.com/login/callback',
+  callbackURL: 'http://127.0.0.1:3000/login/callback',
 },
 ((req, token, tokenSecret, profile, done) => {
   userModel.findOne({
@@ -167,6 +167,7 @@ app.get('/newanalizys', ensureAuthenticated(), (request, response) => {
 
 app.post('/result', (request, response) => {
   const tweets = request.body.texto;
+  console.log(request.body)
   cognitive(tweets, request, response);
   response.redirect('analizys');
 });
