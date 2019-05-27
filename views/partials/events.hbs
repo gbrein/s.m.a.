@@ -1,29 +1,19 @@
-<div class="col-md-4">
-  <div class="card">
-    <img class="card-img-top" alt="Bootstrap Thumbnail First" src="{{this.path}}" alt={{this.originalName}} />
-    <div class="card-block">
-      <h5 class="card-title">
-        {{this.title}}
-      </h5>
-      <h6>
-        Organizer: {{this.name}}
-      </h6>
-      <p class="card-text">
-        {{this.date}}
-      </p>
-      <p class="card-text">
-        {{this.city}}/{{this.state}}
-      </p>
-      <p class="card-text">
-        {{this.address}}
-      </p>      
-      <h5>Description</h5>
-      <p class="card-text">
-        {{this.description}}
-      </p>      
-      <p>
-        <a class="btn btn-primary" href="http://{{this.link}}">Buy</a> <a class="btn" href="mailto:{{this.email}}">Contact</a>
-      </p>
+    <div class="card-group" style="width:322px;height:398px;">
+      <div class="card" style="height:900px;">
+        <img class="card-img-top w-100 d-block" style="height:218px;" src="{{this.path}}" alt={{this.originalName}}>
+        <label class="d-flex justify-content-center title1" style="padding:6px;">Compatibility Score</label><span
+          class="badge badge-primary d-flex justify-content-center align-items-center align-content-center align-self-center"
+          style="height:26px;font-size:17px;width:147px;">42</span>
+        <div class="card-body">
+          <h4 class="card-title title1">{{this.title}}</h4>
+          <h6 class="card-title title2">{{this.date}}</h6>
+          <h6 class="card-title title2">{{this.city}}/{{this.state}}</h6>
+          <h6 class="card-title title2">{{this.address}}</h6>
+          <p class="card-text description">{{this.description}}</p>
+          <a class="btn btn-primary" href="http://{{this.link}}">Buy</a>
+          <a class="btn" href="mailto:{{this.email}}">Contact</a>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
+
+  

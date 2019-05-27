@@ -10,7 +10,6 @@
 .box-result {
     /* height: 36em; */
     overflow: auto;
-    
 }
 
 .newtweet{
@@ -20,6 +19,47 @@
 body {
     overflow-x: hidden;
 }
+
 .all-text{
     overflow: auto;
+}
+
+.form-event{
+    margin-bottom: 10em;
+}
+
+.form-group {
+    margin-bottom: 12em;
+}
+
+.form-control{
+    margin-bottom: 2em;
+}
+
+#formTweets{
+    margin-bottom: 10em;
+}
+
+.title2{
+    font-size: 0.7em;
+}
+
+.title1{
+    font-size: 1em;
+}
+
+.description{
+    font-size: 0.7em;
+}
+
+.card-group{
+    margin-right: 1em;
+}
+
+.box-result{
+    margin-bottom: 10em;
+}
+
+.box-result2{
+    margin-bottom: 50em;
 }
