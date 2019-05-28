@@ -81,8 +81,8 @@ app.use(passport.session());
 passport.use(new TwitterStrategy({
   consumerKey: process.env.consumerKey,
   consumerSecret: process.env.consumerSecret,
-  callbackURL: 'https://pure-forest-44229.herokuapp.com/login/callback',
-  // callbackURL: 'http://127.0.0.1:3000/login/callback',
+  // callbackURL: 'https://pure-forest-44229.herokuapp.com/login/callback',
+  callbackURL: 'http://127.0.0.1:3000/login/callback',
 },
 ((req, token, tokenSecret, profile, done) => {
   userModel.findOne({
@@ -152,12 +152,15 @@ app.get('/login/callback',
   }));
 
 app.get('/newanalizys', ensureAuthenticated(), (request, response) => {
+  const username = request.session.passport.user.username;
   client.get('statuses/user_timeline', {
+    screen_name: username,
     count: 10,
     exclude_replies: true,
     include_rts: false,
   }).then((data) => {
     const infoTwitter = data.data;
+    // console.log(infoTwitter)
     response.render('newanalizys', {
       infoTwitter,
       layout: 'layoutLoged.hbs',
@@ -167,7 +170,7 @@ app.get('/newanalizys', ensureAuthenticated(), (request, response) => {
 
 app.post('/result', (request, response) => {
   const tweets = request.body.texto;
-  console.log(request.body)
+  // console.log(request.body)
   cognitive(tweets, request, response);
   response.redirect('analizys');
 });
@@ -180,6 +183,7 @@ app.get('/analizys', (request, response) => {
     .then((user) => {
       // console.log(user);
       if (user.length != 0) {
+        // console.log(user)
         response.render('analizys', {
           user,
           layout: 'layoutLoged.hbs',
