@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/gbrein/s.m.a.#readme",
   "dependencies": {
-    "aws-sdk": "^2.461.0",
+    "aws-sdk": "^2.814.0",
     "axios": "^0.18.0",
     "body-parser": "^1.19.0",
     "connect-ensure-authenticated": "^1.0.6",
